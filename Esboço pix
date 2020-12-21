@@ -1,0 +1,14 @@
+                                                               |Módulo 1|                                                                    |Módulo 2|
+                                                                   |                                                                              |
+                                                                   |                                                                              |
+                                                            |Regra de negócio|                                                              |Parte gráfica|
+                                                                   |
+                                                                   |
+                                      Banco A-------------------Banco B----------------------Banco C
+                                         |
+                                         |
+                        Agência 1-----Agência 2------Agência 3
+                            |    
+                            |
+|Conta Corrente|-----|Conta poupança|-----|Conta salário|
+           
