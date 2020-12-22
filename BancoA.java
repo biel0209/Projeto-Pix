@@ -1,9 +1,13 @@
-
 public class BancoA{
-    private String code = "087";
+    private String code_bancoA = "087";
 
-    public String getCode() {return this.code;}
+    public BancoA(String code_bancoA){
+        this.code_bancoA = code_bancoA;
+    }
 
-    public void setCode(String code) {this.code = code;}
+
+    public String getCode_bancoA() {return this.code_bancoA;}
+
+    public void setCode_bancoA(String code_bancoA) {this.code_bancoA = code_bancoA;}
     
 }
