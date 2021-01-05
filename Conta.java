@@ -31,17 +31,41 @@ public class Conta{
     }
 
     public void transferir(Conta origem, Conta destino, float valor){
+        System.out.println("\n========Transferência=========");
         if (valor <= origem.getSaldo()){
+            //origem.setExtrato("Saldo: " + origem.getSaldo());
+            //destino.setExtrato("Saldo: " + destino.getSaldo());
             origem.setSaldo(origem.getSaldo() - valor);
             destino.setSaldo(destino.getSaldo() + valor);
             System.out.println("Transferência de " + valor + " reais realizada com sucesso!" + 
-                            "\nDados da conta de destino:" +
-                            "\n\tNome: " + destino.getNome() + 
-                            "\n\tCpf: " + destino.getCpf() +
-                            "\n\tNúmero da conta: " + destino.getNumeroConta());
+                            "\nDados da conta de origem:" +
+                            "\n\tNome: " + origem.getNome() + 
+                            "\n\tCpf: " + origem.getCpf() +
+                            "\n\tNúmero da conta: " + origem.getNumeroConta());
+            System.out.println("\nDados da conta de destino:" +
+                               "\n\tNome: " + destino.getNome() + 
+                               "\n\tCpf: " + destino.getCpf() +
+                               "\n\tNúmero da conta: " + destino.getNumeroConta());
+           
+            origem.setExtrato(origem.getExtrato() + "\nTransferencia -> " + " -" + valor );
+            destino.setExtrato(destino.getExtrato() + "\nTransferencia -> " + " +" + valor );
+
+            origem.setExtrato(origem.getExtrato() + "\nSaldo: " + origem.getSaldo() );
+            destino.setExtrato(destino.getExtrato() + "\nSaldo: " + destino.getSaldo() );
         }
         else    
             System.out.println("Saldo insuficiente para transferir!\n");
+    }
+
+    public void exibirExtrato(){
+        //setExtrato(extrato + "\nSaldo: " + getSaldo());
+        System.out.println("\n============Extrato===========\n" + 
+                            "Conta: "+ getNumeroConta() + "\n\n" + getExtrato());
+    }
+
+    public void exibirSaldo(){
+        System.out.println("\n============Saldo===========\n" + 
+                            "Conta: "+ getNumeroConta() + "\n\n" + getSaldo());
     }
 
 
