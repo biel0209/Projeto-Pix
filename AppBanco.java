@@ -2,11 +2,11 @@ import java.util.Scanner;
 public class AppBanco{
     public static void main(String[] args){
         Conta conta1 = new Conta ("Jose","03549135177","joseberson45@gmail.com","998546621","108",
-                                   "1733","5584917","013",4500f);
+                                   "1733","5584917","7",4500f);
         Conta conta2 = new Conta ("Marcus","12304587944","marcus.bg@hotmail.com","988456517","108",
-                                   "1733","7134580","013",5000f);
+                                   "1733","7134580","9",5000f);
         Conta conta3 = new Conta ("Andre","54691532105","andrelg@gmail.com","999546278","108",
-                                   "1733","2465879","013",2300f);     
+                                   "1733","2465879","7",2300f);     
 
         String numeroDaConta;
         Scanner input = new Scanner(System.in);
@@ -37,7 +37,7 @@ public class AppBanco{
     }
 
     public static void inicializarExtrato(Conta conta){
-        conta.setExtrato("Saldo: " + conta.getSaldo());
+        conta.setExtrato("Saldo: R$" + conta.getSaldo());
     }
 
     public static void abrirMenu(Conta conta1, Conta conta2, Conta conta3){
@@ -71,33 +71,52 @@ public class AppBanco{
 
     public static void realizarTransferencia(Conta conta1, Conta conta2, Conta conta3){
         Scanner input = new Scanner(System.in);
-        System.out.print("Digite o numero da conta de destino: ");
+        System.out.print("Dados da conta de destino:\n\t\tCodigo do banco: ");
+        String banco = input.next();
+        System.out.print("\t\tNumero da agência: ");
+        String agencia = input.next();
+        System.out.print("\t\tTecle 7 para conta Corrente ou 9 para conta Poupança: ");
+        String tipoConta = input.next();
+        System.out.print("\t\tNumero da conta de destino: ");
         String numeroConta = input.next();
-        System.out.print("Digite o valor: ");
+        System.out.print("Digite o valor: R$");
         float valor = input.nextFloat();
-        byte opcao;
-        if (numeroConta.equals(conta2.getNumeroConta())){
-            System.out.println("\nDados da conta de destino:" +
+        String opcao;
+        if (banco.equals(conta2.getCodeBanco()) && agencia.equals(conta2.getCodeAgencia()) &&
+                         tipoConta.equals(conta2.getTipoConta()) && numeroConta.equals(conta2.getNumeroConta())){
+            System.out.println("\nInformações da conta de destino:" +
                                "\n\tNome: " + conta2.getNome() + 
                                "\n\tCpf: " + conta2.getCpf() +
                                "\n\tNúmero da conta: " + conta2.getNumeroConta());
-            System.out.print("\nTecle 1 para confirmar a operação ou qualquer outro digito para voltar: ");
+            System.out.print("\nDigite sua chave PIX para confirmar a transferência ou tecle 1 para cancelar: ");
 
-            opcao = input.nextByte();
-            if (opcao==1)
-                conta1.transferir(conta1,conta2,valor);           
+            opcao = input.next();
+            if (opcao.equals(conta1.getTelefone()) || opcao.equals(conta1.getEmail()))
+                conta1.transferir(conta1,conta2,valor);
+            else if (opcao.equals("1"))
+                ;
+            else
+                System.out.println("Chave PIX incorreta! Transferência encerrada.\n");
         }
-        else if (numeroConta.equals(conta3.getNumeroConta())){
+        else if (banco.equals(conta3.getCodeBanco()) && agencia.equals(conta3.getCodeAgencia()) &&
+                 tipoConta.equals(conta3.getTipoConta()) && numeroConta.equals(conta3.getNumeroConta())){
             System.out.println("\nDados da conta de destino:" +
                                "\n\tNome: " + conta3.getNome() + 
                                "\n\tCpf: " + conta3.getCpf() +
                                "\n\tNúmero da conta: " + conta3.getNumeroConta());
-            System.out.println("\nTecle 1 para confirmar a operação ou qualquer outro digito para voltar\n");
+            System.out.print("\nDigite sua chave PIX para confirmar a transferência ou tecle 1 para cancelar: ");
 
-            opcao = input.nextByte();
-            if (opcao==1)
-                conta1.transferir(conta1,conta3,valor);     
+            opcao = input.next();
+            if (opcao.equals(conta1.getTelefone()) || opcao.equals(conta1.getEmail()))
+                conta1.transferir(conta1,conta2,valor);
+            else if (opcao.equals("1"))
+                ;
+            else
+                System.out.println("Chave PIX incorreta! Transferência encerrada.\n");    
         }
+        else
+            System.out.println("\nConta inexistente ou dados incorretos!\n");    
+
 
     }
 
