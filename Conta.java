@@ -28,17 +28,16 @@ public class Conta{
     }
 
     public void transferir(Conta origem, Conta destino, float valor){
-        System.out.println("\n========Transferência=========");
         if (valor <= origem.getSaldo()){
             origem.setSaldo(origem.getSaldo() - valor);
             destino.setSaldo(destino.getSaldo() + valor);
-            System.out.println("Transferência de " + valor + " reais realizada com sucesso!\n");
+            System.out.println("\nTransferência de R$" + valor + " reais realizada com sucesso!\n");
            
-            origem.setExtrato(origem.getExtrato() + "\nTransferencia -> " + " -" + valor );
-            destino.setExtrato(destino.getExtrato() + "\nTransferencia -> " + " +" + valor );
+            origem.setExtrato(origem.getExtrato() + "\nTransferencia via PIX -> " + "-R$" + valor );
+            destino.setExtrato(destino.getExtrato() + "\nTransferencia via PIX -> " + "+R$" + valor );
 
-            origem.setExtrato(origem.getExtrato() + "\nSaldo: " + origem.getSaldo() );
-            destino.setExtrato(destino.getExtrato() + "\nSaldo: " + destino.getSaldo() );
+            origem.setExtrato(origem.getExtrato() + "\nSaldo: R$" + origem.getSaldo() );
+            destino.setExtrato(destino.getExtrato() + "\nSaldo: R$" + destino.getSaldo() );
         }
         else    
             System.out.println("Saldo insuficiente para transferir!\n");
