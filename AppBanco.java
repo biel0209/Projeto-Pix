@@ -49,7 +49,7 @@ public class AppBanco{
         byte condicao = 0;
         while (condicao == 0){
             System.out.println("|Menu|");
-            System.out.print("1-Transferência\t\t2-Ver extrato\t\t3-Consultar saldo\t\t4-Deslogar\n\nDigite uma opção: ");
+            System.out.print("1-Transferência\t\t2-Ver extrato\t\t3-Consultar saldo\t\t4-Depositar\t\t5-Sacar\t\t6-Deslogar\n\nDigite uma opção: ");
             opcao = input.nextByte();
             if (opcao==1){
                 realizarTransferencia(conta1,conta2,conta3);
@@ -61,12 +61,32 @@ public class AppBanco{
                 conta1.exibirSaldo();
             }
             else if (opcao == 4){
+                realizarDeposito(conta1);
+            }
+            else if (opcao == 5){
+                realizarSaque(conta1);
+            }
+            else if (opcao == 6){
                 break;
             }
             else
                 System.out.println("Opção inválida. Digite novamente: ");
         }
 
+    }
+
+    public static void realizarDeposito(Conta conta1){
+        Scanner input = new Scanner(System.in);
+        System.out.print("Digite o valor a ser depositado: ");
+        float valor = input.nextFloat();
+        conta1.depositar(valor);
+    }
+
+    public static void realizarSaque(Conta conta1){
+        Scanner input = new Scanner(System.in);
+        System.out.print("Digite o valor a ser sacado: ");
+        float valor = input.nextFloat();
+        conta1.sacar(valor);
     }
 
     public static void realizarTransferencia(Conta conta1, Conta conta2, Conta conta3){
