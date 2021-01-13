@@ -50,9 +50,29 @@ public class Conta{
 
     public void exibirSaldo(){
         System.out.println("\n============Saldo===========\n" + 
-                            "Conta: "+ getNumeroConta() + "\n\n" + getSaldo() + "\n");
+                            "Conta: "+ getNumeroConta() + "\n\nR$" + getSaldo() + "\n");
     }
 
+    public void depositar(float valor){
+        setSaldo(getSaldo() + valor);
+        setExtrato(getExtrato() + "\nDeposito -> " + "+R$" + valor);
+        setExtrato(getExtrato() + "\nSaldo: R$" + getSaldo());
+        System.out.println("Deposito de R$" + valor + " reais realizado com sucesso!\n");
+
+
+    }
+
+    public void sacar(float valor){
+        if (valor <= getSaldo()){
+            setSaldo(getSaldo() - valor);
+            setExtrato(getExtrato() + "\nSaque -> " + "-R$" + valor);
+            setExtrato(getExtrato() + "\nSaldo: R$" + getSaldo());
+            System.out.println("Saque de R$" + valor + " reais realizado com sucesso!\n");
+
+        }else
+            System.out.println("Saldo insuficiente para sacar!\n");
+
+    }
 
     public String getNome() {
         return this.nome;
