@@ -10,7 +10,8 @@ public class Conta{
     private float saldo;
     private String extrato;
 
-     
+    public Conta(){}
+
     public Conta (String nome, String cpf, 
                  String email, String telefone,
                  String codeBanco, String codeAgencia, 
@@ -31,13 +32,14 @@ public class Conta{
         if (valor <= origem.getSaldo()){
             origem.setSaldo(origem.getSaldo() - valor);
             destino.setSaldo(destino.getSaldo() + valor);
+
             System.out.println("\nTransferência de R$" + valor + " reais realizada com sucesso!\n");
            
-            origem.setExtrato(origem.getExtrato() + "\nTransferencia via PIX -> " + "-R$" + valor );
-            destino.setExtrato(destino.getExtrato() + "\nTransferencia via PIX -> " + "+R$" + valor );
+            origem.setExtrato(origem.getExtrato() + " || Transferencia via PIX: " + "-R$" + valor );
+            destino.setExtrato(destino.getExtrato() + " || Transferencia via PIX: " + "+R$" + valor );
 
-            origem.setExtrato(origem.getExtrato() + "\nSaldo: R$" + origem.getSaldo() );
-            destino.setExtrato(destino.getExtrato() + "\nSaldo: R$" + destino.getSaldo() );
+            origem.setExtrato(origem.getExtrato() + " || Saldo: R$" + origem.getSaldo() );
+            destino.setExtrato(destino.getExtrato() + " || Saldo: R$" + destino.getSaldo() );
         }
         else    
             System.out.println("Saldo insuficiente para transferir!\n");
@@ -55,8 +57,8 @@ public class Conta{
 
     public void depositar(float valor){
         setSaldo(getSaldo() + valor);
-        setExtrato(getExtrato() + "\nDeposito -> " + "+R$" + valor);
-        setExtrato(getExtrato() + "\nSaldo: R$" + getSaldo());
+        setExtrato(getExtrato() + " || Deposito: " + "+R$" + valor);
+        setExtrato(getExtrato() + " || Saldo: R$" + getSaldo());
         System.out.println("Deposito de R$" + valor + " reais realizado com sucesso!\n");
 
 
@@ -65,8 +67,8 @@ public class Conta{
     public void sacar(float valor){
         if (valor <= getSaldo()){
             setSaldo(getSaldo() - valor);
-            setExtrato(getExtrato() + "\nSaque -> " + "-R$" + valor);
-            setExtrato(getExtrato() + "\nSaldo: R$" + getSaldo());
+            setExtrato(getExtrato() + " || Saque: " + "-R$" + valor);
+            setExtrato(getExtrato() + " || Saldo: R$" + getSaldo());
             System.out.println("Saque de R$" + valor + " reais realizado com sucesso!\n");
 
         }else
