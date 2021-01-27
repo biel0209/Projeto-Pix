@@ -1,128 +1,112 @@
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.RandomAccessFile;
+
 public class AppBanco{
-    public static void main(String[] args){
+    public static final String FILENAME = "/E:/UFS/3 PERIODO/POO/Projeto Pix/BaseClientes.txt"; //localizacao do arquivo de banco de dados
+    private static ArrayList<Conta> listaConta = new ArrayList<>(); //arraylist onde será armazenado todos os objetos conta
+    public static void main(String[] args) {
+        //Extrair informações do arquivo FILENAME
+        String dados = FILENAME; //caminho
+        String textoArquivo = ManipularArquivo.ler(dados); //ler o arquivo todo como uma única string
 
-        //ler nomes
-        String dadosNomes = "/E:/UFS/3 PERIODO/POO/Projeto Pix/Nomes.txt"; //caminho
-        String textoNomes = ManipularArquivo.ler(dadosNomes); //ler
-        String nome[] = new String[3]; //criar vetor para armazenar os nomes
-        nome[0] = textoNomes.split(";")[0];    
-        nome[1] = textoNomes.split(";")[1];    
-        nome[2] = textoNomes.split(";")[2];    
-
-        //ler cpfs
-        String dadosCpfs = "/E:/UFS/3 PERIODO/POO/Projeto Pix/Cpfs.txt"; //caminho
-        String textoCpfs = ManipularArquivo.ler(dadosCpfs); //ler
-        String cpf[] = new String[3]; //criar vetor para armazenar os cpfs
-        cpf[0] = textoCpfs.split(";")[0];    
-        cpf[1] = textoCpfs.split(";")[1];    
-        cpf[2] = textoCpfs.split(";")[2];
-
-        //ler emails
-        String dadosEmails = "/E:/UFS/3 PERIODO/POO/Projeto Pix/Emails.txt"; //caminho
-        String textoEmails = ManipularArquivo.ler(dadosEmails); //ler
-        String email[] = new String[3]; //criar vetor para armazenar os emails
-        email[0] = textoEmails.split(";")[0];    
-        email[1] = textoEmails.split(";")[1];    
-        email[2] = textoEmails.split(";")[2];
-
-        //ler telefones
-        String dadosTelefones = "/E:/UFS/3 PERIODO/POO/Projeto Pix/Telefones.txt"; //caminho
-        String textoTelefones = ManipularArquivo.ler(dadosTelefones); //ler
-        String telefone[] = new String[3]; //criar vetor para armazenar os telefones
-        telefone[0] = textoTelefones.split(";")[0];    
-        telefone[1] = textoTelefones.split(";")[1];    
-        telefone[2] = textoTelefones.split(";")[2];
-
-        //ler codigosBanco
-        String dadosCodigosBanco = "/E:/UFS/3 PERIODO/POO/Projeto Pix/CodigosBanco.txt"; //caminho
-        String textoCodigosBanco = ManipularArquivo.ler(dadosCodigosBanco); //ler
-        String codigosBanco[] = new String[3]; //criar vetor para armazenar os codigos dos bancos
-        codigosBanco[0] = textoCodigosBanco.split(";")[0];    
-        codigosBanco[1] = textoCodigosBanco.split(";")[1];    
-        codigosBanco[2] = textoCodigosBanco.split(";")[2];
-
+        int qtdContas = encontrarQtdOcorrencias(textoArquivo,"/"); //encontrar o numero de contas baseado na quantidade de "/", ja que ao final de cada linha existe esse caracter
         
+        String pessoa[] = new String[qtdContas]; //cada variavel pessoa armazenará uma linha do arquivo. Cada linha corresponde à informacoes de uma pessoa
+        Conta[] conta = new Conta[qtdContas];  //criação dos objetos contas
 
-        //ler codigosAgencia
-        String dadosCodigosAgencia = "/E:/UFS/3 PERIODO/POO/Projeto Pix/CodigosAgencia.txt"; //caminho
-        String textoCodigosAgencia = ManipularArquivo.ler(dadosCodigosAgencia); //ler
-        String codigosAgencia[] = new String[3]; //criar vetor para armazenar os codigos das agencias
-        codigosAgencia[0] = textoCodigosAgencia.split(";")[0];    
-        codigosAgencia[1] = textoCodigosAgencia.split(";")[1];    
-        codigosAgencia[2] = textoCodigosAgencia.split(";")[2];
+        //inicializando cada posição do vetor conta como um objeto do tipo Conta
+        for (int i=0; i<qtdContas; i++ )
+            conta[i] = new Conta();
+
+        //cada posição de pessoa[] gardará uma linha, ou seja, cada posição corresponde ás informações de uma pessoa
+        for (int i=0; i<pessoa.length; i++ )
+            pessoa[i] = textoArquivo.split("/")[i]; //quebrando o arquivo original em padrões, limitados pelo caracter "/". Cada linha finaliza no caracter "/"
         
+        //O método ler irá quebrar novamente a string pessoa no padrão do caracter ";", alocando cada informacao ao seu respectivo atributo da conta
+        for (int i=0; i<pessoa.length; i++ )
+            listaConta.add(ler(conta[i],pessoa[i])); 
 
-        //ler numeros das contas
-        String dadosNumeroContas = "/E:/UFS/3 PERIODO/POO/Projeto Pix/NumeroContas.txt"; //caminho
-        String textoNumeroContas = ManipularArquivo.ler(dadosNumeroContas); //ler
-        String numeroConta[] = new String[3]; //criar vetor para armazenar os numeros das contas
-        numeroConta[0] = textoNumeroContas.split(";")[0];    
-        numeroConta[1] = textoNumeroContas.split(";")[1];    
-        numeroConta[2] = textoNumeroContas.split(";")[2];
-
-         //ler tipo de conta
-         String dadosTipoContas = "/E:/UFS/3 PERIODO/POO/Projeto Pix/TipoContas.txt"; //caminho
-         String textoTipoContas = ManipularArquivo.ler(dadosTipoContas); //ler
-         String tipoConta[] = new String[3]; //criar vetor para armazenar os tipos das contas
-         tipoConta[0] = textoTipoContas.split(";")[0];    
-         tipoConta[1] = textoTipoContas.split(";")[1];    
-         tipoConta[2] = textoTipoContas.split(";")[2];
-
-         //ler saldo
-         String dadosSaldos = "/E:/UFS/3 PERIODO/POO/Projeto Pix/Saldos.txt"; //caminho
-         String textoSaldos = ManipularArquivo.ler(dadosSaldos); //ler
-         float saldo[] = new float[3]; //criar vetor para armazenar os saldos
-         saldo[0] = Float.valueOf(textoSaldos.split(";")[0]); //convertendo a string pra float
-         saldo[1] = Float.valueOf(textoSaldos.split(";")[1]); //convertendo a string pra float
-         saldo[2] = Float.valueOf(textoSaldos.split(";")[2]); //convertendo a string pra float
-
-        Conta conta0 = new Conta (nome[0],cpf[0],email[0],telefone[0],codigosBanco[0],
-                                   codigosAgencia[0],numeroConta[0],tipoConta[0],saldo[0]);
-
-        Conta conta1 = new Conta (nome[1],cpf[1],email[1],telefone[1],codigosBanco[1],
-                                  codigosAgencia[1],numeroConta[1],tipoConta[1],saldo[1]);
-
-        Conta conta2 = new Conta (nome[2],cpf[2],email[2],telefone[2],codigosBanco[2],
-                                  codigosAgencia[2],numeroConta[2],tipoConta[2],saldo[2]);     
+        /*Inicializando o extrato
+        for (int i=0; i < listaConta.size(); i++){
+            if(listaConta.get(i).getExtrato() == null) 
+                inicializarExtrato(listaConta.get(i));
+        }*/
 
         String numeroDaConta;
         Scanner input = new Scanner(System.in);
-
-        inicializarExtrato(conta0);
-        inicializarExtrato(conta1);
-        inicializarExtrato(conta2);
 
         System.out.println("===========================================================================BANCO NEXTOLL===========================================================================");
         byte condicao = 0;
         while(condicao == 0){
             System.out.print("\n|Tela de Login|\nDigite sua conta ou tecle 1 para sair: ");
             numeroDaConta = input.next();
-            if (numeroDaConta.equals("5584917")){
-                abrirMenu(conta0,conta1,conta2);
-            }
-            else if(numeroDaConta.equals("7134580")){
-                abrirMenu(conta1,conta0,conta2);
-            }
-            else if(numeroDaConta.equals("2465879")){
-                abrirMenu(conta2,conta0,conta1);
-            }
-            else if(numeroDaConta.equals("1")){
+            if (numeroDaConta.equals("1")){
+                salvar();
                 break;
+            }else{
+                for (int i=0; i < listaConta.size(); i++){
+                    if(listaConta.get(i).getNumeroConta().equals(numeroDaConta)) 
+                        abrirMenu(listaConta.get(i));
+                }
             }
         }
         input.close();
+        
+    }
+
+    public static int encontrarQtdOcorrencias(String strFonte, String str){  //Encontrar o numero de vezes que a string str ocorre na string strFonte
+        int pos = -1;
+        int contador = 0;
+        while (true) {
+            pos = strFonte.indexOf (str, pos + 1); 
+            if (pos < 0) break;
+            contador++;
+        }
+        return contador;
+    }
+
+    public static Conta ler(Conta conta, String pessoa){
+        //pegar dados da string pessoa e armazenar no objeto conta
+        conta.setNome(pessoa.split(";")[0]); 
+        conta.setCpf(pessoa.split(";")[1]);    
+        conta.setEmail(pessoa.split(";")[2]);    
+        conta.setTelefone(pessoa.split(";")[3]);    
+        conta.setCodeBanco(pessoa.split(";")[4]);    
+        conta.setCodeAgencia(pessoa.split(";")[5]);    
+        conta.setNumeroConta(pessoa.split(";")[6]);
+        conta.setTipoConta(pessoa.split(";")[7]);
+        conta.setSaldo(Float.valueOf(pessoa.split(";")[8]));   //conversao de String saldo para Float saldo, para facilitar seu uso interno no programa
+        conta.setExtrato(pessoa.split(";")[9]);
+        return conta;
+    }
+
+    public static void salvar(){
+        try{
+            RandomAccessFile arquivo = new RandomAccessFile(FILENAME, "rw");
+            for (Conta conta : listaConta) {
+                String linha = conta.getNome() + ";" + conta.getCpf() + ";" +
+                                conta.getEmail() + ";" + conta.getTelefone() + ";" +
+                                conta.getCodeBanco() + ";" + conta.getCodeAgencia() + ";" +
+                                conta.getNumeroConta() + ";" + conta.getTipoConta() + ";" +
+                                conta.getSaldo() + ";" + conta.getExtrato() + "/\n";
+                arquivo.write(linha.getBytes());
+            }
+            arquivo.close();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public static void inicializarExtrato(Conta conta){
         conta.setExtrato("Saldo: R$" + conta.getSaldo());
     }
 
-    public static void abrirMenu(Conta conta0, Conta conta1, Conta conta2){
+    public static void abrirMenu(Conta conta){
         Scanner input = new Scanner(System.in);
         System.out.println("\n|Dados da conta|");
-        System.out.println("Nome: " + conta0.getNome() + "\tBanco: " + conta0.getCodeBanco() + "\tAgencia: " + conta0.getCodeAgencia() +
-                           "\tTipo de conta: " + conta0.getTipoConta() + "\tConta: " + conta0.getNumeroConta() + "\n");
+        System.out.println("Nome: " + conta.getNome() + "\tBanco: " + conta.getCodeBanco() + "\tAgencia: " + conta.getCodeAgencia() +
+                           "\tTipo de conta: " + conta.getTipoConta() + "\tConta: " + conta.getNumeroConta() + "\tCpf: " + conta.getCpf() + "\n");
         byte opcao;
         byte condicao = 0;
         while (condicao == 0){
@@ -130,19 +114,19 @@ public class AppBanco{
             System.out.print("1-Transferência\t\t2-Ver extrato\t\t3-Consultar saldo\t\t4-Depositar\t\t5-Sacar\t\t6-Deslogar\n\nDigite uma opção: ");
             opcao = input.nextByte();
             if (opcao==1){
-                realizarTransferencia(conta0,conta1,conta2);
+                realizarTransferencia(conta);
             }
             else if (opcao == 2){
-                conta0.exibirExtrato();
+                conta.exibirExtrato();
             }
             else if (opcao == 3){
-                conta0.exibirSaldo();
+                conta.exibirSaldo();
             }
             else if (opcao == 4){
-                realizarDeposito(conta0);
+                realizarDeposito(conta);
             }
             else if (opcao == 5){
-                realizarSaque(conta0);
+                realizarSaque(conta);
             }
             else if (opcao == 6){
                 break;
@@ -153,21 +137,23 @@ public class AppBanco{
 
     }
 
-    public static void realizarDeposito(Conta conta0){
+    public static void realizarDeposito(Conta conta){
         Scanner input = new Scanner(System.in);
         System.out.print("Digite o valor a ser depositado: ");
         float valor = input.nextFloat();
-        conta0.depositar(valor);
+        conta.depositar(valor);
+        salvar();
     }
 
-    public static void realizarSaque(Conta conta0){
+    public static void realizarSaque(Conta conta){
         Scanner input = new Scanner(System.in);
         System.out.print("Digite o valor a ser sacado: ");
         float valor = input.nextFloat();
-        conta0.sacar(valor);
+        conta.sacar(valor);
+        salvar();
     }
 
-    public static void realizarTransferencia(Conta conta0, Conta conta1, Conta conta2){
+    public static void realizarTransferencia(Conta conta){
         Scanner input = new Scanner(System.in);
         System.out.print("Dados da conta de destino:\n\t\tCodigo do banco: ");
         String banco = input.next();
@@ -178,44 +164,35 @@ public class AppBanco{
         System.out.print("\t\tNumero da conta de destino: ");
         String numeroConta = input.next();
         System.out.print("Digite o valor: R$");
-        float valor = input.nextFloat();
+        float valor = input.nextFloat(); 
         String opcao;
-        if (banco.equals(conta1.getCodeBanco()) && agencia.equals(conta1.getCodeAgencia()) &&
-                         tipoConta.equals(conta1.getTipoConta()) && numeroConta.equals(conta1.getNumeroConta())){
-            System.out.println("\nInformações da conta de destino:" +
-                               "\n\tNome: " + conta1.getNome() + 
-                               "\n\tCpf: " + conta1.getCpf() +
-                               "\n\tNúmero da conta: " + conta1.getNumeroConta());
-            System.out.print("\nDigite sua chave PIX para confirmar a transferência ou tecle 1 para cancelar: ");
 
-            opcao = input.next();
-            if (opcao.equals(conta0.getTelefone()) || opcao.equals(conta0.getEmail()))
-                conta0.transferir(conta0,conta1,valor);
-            else if (opcao.equals("1"))
-                ;
-            else
-                System.out.println("Chave PIX incorreta! Transferência encerrada.\n");
+        int index = -1;
+        for (int i=0; i < listaConta.size(); i++){
+            if (numeroConta.equals(listaConta.get(i).getNumeroConta()))
+                index = i;
         }
-        else if (banco.equals(conta2.getCodeBanco()) && agencia.equals(conta2.getCodeAgencia()) &&
-                 tipoConta.equals(conta2.getTipoConta()) && numeroConta.equals(conta2.getNumeroConta())){
-            System.out.println("\nDados da conta de destino:" +
-                               "\n\tNome: " + conta2.getNome() + 
-                               "\n\tCpf: " + conta2.getCpf() +
-                               "\n\tNúmero da conta: " + conta2.getNumeroConta());
-            System.out.print("\nDigite sua chave PIX para confirmar a transferência ou tecle 1 para cancelar: ");
 
-            opcao = input.next();
-            if (opcao.equals(conta0.getTelefone()) || opcao.equals(conta0.getEmail()))
-                conta0.transferir(conta0,conta1,valor);
-            else if (opcao.equals("1"))
-                ;
-            else
-                System.out.println("Chave PIX incorreta! Transferência encerrada.\n");    
-        }
-        else
-            System.out.println("\nConta inexistente ou dados incorretos!\n");    
+        if(index == -1)
+            System.out.println("\nConta inexistente!\n");    
 
+        else if (banco.equals(listaConta.get(index).getCodeBanco()) && agencia.equals(listaConta.get(index).getCodeAgencia()) &&
+                tipoConta.equals(listaConta.get(index).getTipoConta()) ){
+                System.out.println("\nInformações da conta de destino:" +
+                                    "\n\tNome: " + listaConta.get(index).getNome() + 
+                                    "\n\tCpf: " + listaConta.get(index).getCpf() +
+                                    "\n\tNúmero da conta: " + listaConta.get(index).getNumeroConta());
+                System.out.print("\nDigite sua chave PIX para confirmar a transferência ou tecle 1 para cancelar: ");
 
+                opcao = input.next();
+                if ( opcao.equals(conta.getCpf()) || opcao.equals(conta.getTelefone()) || opcao.equals(conta.getEmail()) )
+                    conta.transferir(conta,listaConta.get(index),valor);
+                else if (opcao.equals("1"))
+                    ;
+                else
+                    System.out.println("Chave PIX incorreta! Transferência encerrada.\n");
+        }else
+            System.out.println("\nDados incorretos!\n");    
+        salvar();
     }
-
 }
