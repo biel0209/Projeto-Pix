@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.RandomAccessFile;
+import java.util.Random;
 
 public class AppBanco{
     public static final String FILENAME = "/E:/UFS/3 PERIODO/POO/Projeto Pix/BaseClientes.txt"; //localizacao do arquivo de banco de dados
@@ -27,32 +28,35 @@ public class AppBanco{
         for (int i=0; i<pessoa.length; i++ )
             listaConta.add(ler(conta[i],pessoa[i])); 
 
-        /*Inicializando o extrato
-        for (int i=0; i < listaConta.size(); i++){
-            if(listaConta.get(i).getExtrato() == null) 
-                inicializarExtrato(listaConta.get(i));
-        }*/
-
-        String numeroDaConta;
+        String opcao;
+        int index = -1;
         Scanner input = new Scanner(System.in);
 
         System.out.println("===========================================================================BANCO NEXTOLL===========================================================================");
-        byte condicao = 0;
-        while(condicao == 0){
-            System.out.print("\n|Tela de Login|\nDigite sua conta ou tecle 1 para sair: ");
-            numeroDaConta = input.next();
-            if (numeroDaConta.equals("1")){
+        //byte condicao = 0;
+        while(true){
+            System.out.print("\n|Tela de Login|\n\n1-Logar\t\t2-Criar conta\t\t3-Sair\n\nEscolha uma opcao: ");
+            opcao = input.next();
+            if (opcao.equals("3")){
                 salvar();
                 break;
-            }else{
+            }else if (opcao.equals("1")){
+                System.out.print("\nCpf: ");
+                opcao = input.next();
                 for (int i=0; i < listaConta.size(); i++){
-                    if(listaConta.get(i).getNumeroConta().equals(numeroDaConta)) 
-                        abrirMenu(listaConta.get(i));
+                    if(listaConta.get(i).getCpf().equals(opcao)) 
+                        index = i;
                 }
-            }
+                if (index == -1)
+                    System.out.println("\nCpf inválido!");
+                else
+                    abrirMenu(listaConta.get(index));
+            }else if(opcao.equals("2"))
+                abrirConta();
+            else
+                System.out.println("Opção inválida, tente novamente!");
         }
         input.close();
-        
     }
 
     public static int encontrarQtdOcorrencias(String strFonte, String str){  //Encontrar o numero de vezes que a string str ocorre na string strFonte
@@ -60,7 +64,8 @@ public class AppBanco{
         int contador = 0;
         while (true) {
             pos = strFonte.indexOf (str, pos + 1); 
-            if (pos < 0) break;
+            if (pos < 0) 
+                break;
             contador++;
         }
         return contador;
@@ -98,43 +103,83 @@ public class AppBanco{
         }
     }
 
-    public static void inicializarExtrato(Conta conta){
-        conta.setExtrato("Saldo: R$" + conta.getSaldo());
+    public static void abrirConta(){
+        Conta novaConta = new Conta();
+        Scanner input = new Scanner(System.in);
+        System.out.print("Precisaremos de algumas informações pessoais\nNome: ");
+        novaConta.setNome(input.nextLine()); 
+        System.out.print("Cpf: ");
+        novaConta.setCpf(input.next()); 
+        System.out.print("Email: ");
+        novaConta.setEmail(input.next()); 
+        System.out.print("Telefone: ");
+        novaConta.setTelefone(input.next()); 
+        System.out.print("Código do banco: ");
+        novaConta.setCodeBanco(input.next());
+        System.out.print("Código da agência: ");
+        novaConta.setCodeAgencia(input.next());
+        novaConta.setNumeroConta(gerarNumeroConta()); //chama uma função gerarNumeroConta que vai ser responsavel por gerar um codigo númerico aleatorio de 7 dígitos
+        System.out.print("Tipo da conta (tecle 7 para corrente e 9 para poupança): ");
+        novaConta.setTipoConta(input.next());
+        novaConta.setSaldo(0f); 
+        novaConta.setExtrato("Saldo: R$" + novaConta.getSaldo());
+        listaConta.add(novaConta);
+        salvar();
+        System.out.println("Conta aberta com sucesso!");
+    }
+
+    public static String gerarNumeroConta(){
+        String numeroContaGerado;
+        int temporaria = 0;
+        while (true){
+            numeroContaGerado = gerarCodigoAleatorio("0123456789", (byte) 7); //gerar um código que envolva qualquer numero entre 0 e 9 e que tenha 7 dígitos. *necessario o casting pra especificar o tipo
+            for(int i=0; i < listaConta.size(); i++){
+                if (numeroContaGerado.equals(listaConta.get(i).getNumeroConta())) //se o numero gerado já existir...
+                    temporaria = 1; 
+            }
+            if (temporaria==0) //se temporaria for 0, então o numero gerado nao existe no banco de dados, e o programa pode sair do while e prosseguir
+                break;
+        }
+        return numeroContaGerado; 
+    }
+
+    public static String gerarCodigoAleatorio(String str, byte tamanhoCodigo){  //a string str é composta por todas letras e/ou caracteres que o código gerado poderá ter 
+        Random rand = new Random();
+        String codigoAleatorio = "";
+        int index = -1;
+        for( int i = 0; i < tamanhoCodigo; i++ ) {
+            index = rand.nextInt( str.length() );
+            codigoAleatorio += str.substring( index, index + 1 );
+        }
+        return codigoAleatorio;
     }
 
     public static void abrirMenu(Conta conta){
         Scanner input = new Scanner(System.in);
         System.out.println("\n|Dados da conta|");
         System.out.println("Nome: " + conta.getNome() + "\tBanco: " + conta.getCodeBanco() + "\tAgencia: " + conta.getCodeAgencia() +
-                           "\tTipo de conta: " + conta.getTipoConta() + "\tConta: " + conta.getNumeroConta() + "\tCpf: " + conta.getCpf() + "\n");
+                           "\tTipo de conta: " + conta.getTipoConta() + "\tConta: " + conta.getNumeroConta() + "\n");
         byte opcao;
         byte condicao = 0;
         while (condicao == 0){
             System.out.println("|Menu|");
             System.out.print("1-Transferência\t\t2-Ver extrato\t\t3-Consultar saldo\t\t4-Depositar\t\t5-Sacar\t\t6-Deslogar\n\nDigite uma opção: ");
             opcao = input.nextByte();
-            if (opcao==1){
+            if (opcao==1)
                 realizarTransferencia(conta);
-            }
-            else if (opcao == 2){
+            else if (opcao == 2)
                 conta.exibirExtrato();
-            }
-            else if (opcao == 3){
+            else if (opcao == 3)
                 conta.exibirSaldo();
-            }
-            else if (opcao == 4){
+            else if (opcao == 4)
                 realizarDeposito(conta);
-            }
-            else if (opcao == 5){
+            else if (opcao == 5)
                 realizarSaque(conta);
-            }
-            else if (opcao == 6){
+            else if (opcao == 6)
                 break;
-            }
             else
                 System.out.println("Opção inválida. Digite novamente: ");
         }
-
     }
 
     public static void realizarDeposito(Conta conta){
