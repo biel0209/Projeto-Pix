@@ -1,5 +1,0 @@
-Nome;CPF;Email;Telefone;CodigoBanco;codigoAgencia;NumeroConta;TipoConta;Saldo;Extrato;
-
-Jose Antônio da Silva;03549135177;joseberson45@gmail.com;998546621;108;1733;5584917;7;4500f;
-Marcus;12304587944;marcus.bg@hotmail.com;988456517;108;1733;7134580;9;5000f;
-Andre Pereira Chaves;54691532105;andrelg@gmail.com;999546278;108;1733;2465879;7;2300f;     
