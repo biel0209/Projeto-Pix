@@ -4,12 +4,11 @@ import java.io.RandomAccessFile;
 import java.util.Random;
 
 public class AppBanco{
-    public static final String FILENAME = "/E:/UFS/3 PERIODO/POO/Projeto Pix/BaseClientes.txt"; //localizacao do arquivo de banco de dados
-    private static ArrayList<Conta> listaConta = new ArrayList<>(); //arraylist onde será armazenado todos os objetos conta
+    
+    public static ArrayList<Conta> listaConta = new ArrayList<>(); //arraylist onde será armazenado todos os objetos conta
     public static void main(String[] args) {
-        //Extrair informações do arquivo FILENAME
-        String dados = FILENAME; //caminho
-        String textoArquivo = ManipularArquivo.ler(dados); //ler o arquivo todo como uma única string
+        //Extrair informações do arquivo de banco de dados
+        String textoArquivo = ManipularArquivo.ler(); //ler o arquivo todo, o converte em uma única string e aloca em textoArquivo
 
         int qtdContas = encontrarQtdOcorrencias(textoArquivo,"/"); //encontrar o numero de contas baseado na quantidade de "/", ja que ao final de cada linha existe esse caracter
         
@@ -24,32 +23,33 @@ public class AppBanco{
         for (int i=0; i<pessoa.length; i++ )
             pessoa[i] = textoArquivo.split("/")[i]; //quebrando o arquivo original em padrões, limitados pelo caracter "/". Cada linha finaliza no caracter "/"
         
-        //O método ler irá quebrar novamente a string pessoa no padrão do caracter ";", alocando cada informacao ao seu respectivo atributo da conta
+        //O método setarDados da classe ManipularArquivo irá quebrar novamente a string pessoa no padrão do caracter ";", alocando cada informacao ao seu respectivo atributo da conta
+        //SetarDados irá retornar uma conta ja preenchida com as informações de um cliente e através do método add, esse objeto conta será adicionado no ArrayList listaConta
         for (int i=0; i<pessoa.length; i++ )
-            listaConta.add(ler(conta[i],pessoa[i])); 
+            listaConta.add(ManipularArquivo.setarDados(conta[i],pessoa[i])); //
 
         String opcao;
-        int index = -1;
+        String lerCpf;
         Scanner input = new Scanner(System.in);
 
         System.out.println("===========================================================================BANCO NEXTOLL===========================================================================");
-        //byte condicao = 0;
         while(true){
+            int index = -1;
             System.out.print("\n|Tela de Login|\n\n1-Logar\t\t2-Criar conta\t\t3-Sair\n\nEscolha uma opcao: ");
             opcao = input.next();
             if (opcao.equals("3")){
-                salvar();
+                ManipularArquivo.salvar(listaConta);   //Ao finalizar o programa, as informações serão salvas!
                 break;
             }else if (opcao.equals("1")){
                 System.out.print("\nCpf: ");
-                opcao = input.next();
-                for (int i=0; i < listaConta.size(); i++){
-                    if(listaConta.get(i).getCpf().equals(opcao)) 
-                        index = i;
+                lerCpf = input.next();
+                for (int i=0; i < listaConta.size(); i++){  //nesse laço, será procurado o cpf digitado, varrendo o arraylist comparando com os cpfs já cadastrados
+                    if(listaConta.get(i).getCpf().equals(lerCpf)) 
+                        index = i;                                      //se o cpf digitado existir, o indice de sua posição no arraylist será armazenado na variavel index pra ser usado mais pra frente
                 }
-                if (index == -1)
+                if (index == -1)   //se index for igual a -1, significa que o laço anterior não encontrou um cpf no banco de dados, pois ele é inicializado com o valor de -1 
                     System.out.println("\nCpf inválido!");
-                else
+                else                                             //se o cpf foi encontrado, então o menu será aberto com a conta da posição de valor index.
                     abrirMenu(listaConta.get(index));
             }else if(opcao.equals("2"))
                 abrirConta();
@@ -71,38 +71,6 @@ public class AppBanco{
         return contador;
     }
 
-    public static Conta ler(Conta conta, String pessoa){
-        //pegar dados da string pessoa e armazenar no objeto conta
-        conta.setNome(pessoa.split(";")[0]); 
-        conta.setCpf(pessoa.split(";")[1]);    
-        conta.setEmail(pessoa.split(";")[2]);    
-        conta.setTelefone(pessoa.split(";")[3]);    
-        conta.setCodeBanco(pessoa.split(";")[4]);    
-        conta.setCodeAgencia(pessoa.split(";")[5]);    
-        conta.setNumeroConta(pessoa.split(";")[6]);
-        conta.setTipoConta(pessoa.split(";")[7]);
-        conta.setSaldo(Float.valueOf(pessoa.split(";")[8]));   //conversao de String saldo para Float saldo, para facilitar seu uso interno no programa
-        conta.setExtrato(pessoa.split(";")[9]);
-        return conta;
-    }
-
-    public static void salvar(){
-        try{
-            RandomAccessFile arquivo = new RandomAccessFile(FILENAME, "rw");
-            for (Conta conta : listaConta) {
-                String linha = conta.getNome() + ";" + conta.getCpf() + ";" +
-                                conta.getEmail() + ";" + conta.getTelefone() + ";" +
-                                conta.getCodeBanco() + ";" + conta.getCodeAgencia() + ";" +
-                                conta.getNumeroConta() + ";" + conta.getTipoConta() + ";" +
-                                conta.getSaldo() + ";" + conta.getExtrato() + "/\n";
-                arquivo.write(linha.getBytes());
-            }
-            arquivo.close();
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
     public static void abrirConta(){
         Conta novaConta = new Conta();
         Scanner input = new Scanner(System.in);
@@ -121,10 +89,11 @@ public class AppBanco{
         novaConta.setNumeroConta(gerarNumeroConta()); //chama uma função gerarNumeroConta que vai ser responsavel por gerar um codigo númerico aleatorio de 7 dígitos
         System.out.print("Tipo da conta (tecle 7 para corrente e 9 para poupança): ");
         novaConta.setTipoConta(input.next());
+        input.close();
         novaConta.setSaldo(0f); 
         novaConta.setExtrato("Saldo: R$" + novaConta.getSaldo());
         listaConta.add(novaConta);
-        salvar();
+        ManipularArquivo.salvar(listaConta);
         System.out.println("Conta aberta com sucesso!");
     }
 
@@ -187,7 +156,7 @@ public class AppBanco{
         System.out.print("Digite o valor a ser depositado: ");
         float valor = input.nextFloat();
         conta.depositar(valor);
-        salvar();
+        ManipularArquivo.salvar(listaConta);
     }
 
     public static void realizarSaque(Conta conta){
@@ -195,7 +164,7 @@ public class AppBanco{
         System.out.print("Digite o valor a ser sacado: ");
         float valor = input.nextFloat();
         conta.sacar(valor);
-        salvar();
+        ManipularArquivo.salvar(listaConta);
     }
 
     public static void realizarTransferencia(Conta conta){
@@ -238,6 +207,6 @@ public class AppBanco{
                     System.out.println("Chave PIX incorreta! Transferência encerrada.\n");
         }else
             System.out.println("\nDados incorretos!\n");    
-        salvar();
+        ManipularArquivo.salvar(listaConta);
     }
 }
