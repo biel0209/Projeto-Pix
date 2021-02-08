@@ -9,6 +9,7 @@ public class Conta{
     private String tipoConta;
     private float saldo;
     private String extrato;
+    private String pix;
 
     public Conta(){}
 
@@ -155,5 +156,15 @@ public class Conta{
     public void setExtrato(String extrato) {
         this.extrato = extrato;
     }
+
+    public String getPix() {
+        return this.pix;
+    }
+
+    public void setPix(String pix) {
+        this.pix = pix;
+    }
+
+   
 
 }
