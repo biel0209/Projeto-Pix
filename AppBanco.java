@@ -31,7 +31,6 @@ public class AppBanco{
         String opcao;
         String lerCpf;
         Scanner input = new Scanner(System.in);
-
         System.out.println("===========================================================================BANCO NEXTOLL===========================================================================");
         while(true){
             int index = -1;
@@ -56,7 +55,7 @@ public class AppBanco{
             else
                 System.out.println("Opção inválida, tente novamente!");
         }
-        input.close();
+       
     }
 
     public static int encontrarQtdOcorrencias(String strFonte, String str){  //Encontrar o numero de vezes que a string str ocorre na string strFonte
@@ -89,9 +88,9 @@ public class AppBanco{
         novaConta.setNumeroConta(gerarNumeroConta()); //chama uma função gerarNumeroConta que vai ser responsavel por gerar um codigo númerico aleatorio de 7 dígitos
         System.out.print("Tipo da conta (tecle 7 para corrente e 9 para poupança): ");
         novaConta.setTipoConta(input.next());
-        input.close();
         novaConta.setSaldo(0f); 
         novaConta.setExtrato("Saldo: R$" + novaConta.getSaldo());
+        novaConta.setPix(gerarPIX()); //chama uma função gerarPix que vai ser responsavel por gerar um codigo alfa-númerico aleatorio de 20 dígitos
         listaConta.add(novaConta);
         ManipularArquivo.salvar(listaConta);
         System.out.println("Conta aberta com sucesso!");
@@ -110,6 +109,21 @@ public class AppBanco{
                 break;
         }
         return numeroContaGerado; 
+    }
+
+    public static String gerarPIX(){
+        String pix;
+        int temporaria = 0;
+        while (true){
+            pix = gerarCodigoAleatorio("abcdefghijklmnopqrstuvwxyz0123456789", (byte) 20); //gerar um código que envolva qualquer letra do alfabeto e numero entre 0 e 9 e que tenha 20 dígitos. *necessario o casting pra especificar o tipo
+            for(int i=0; i < listaConta.size(); i++){
+                if (pix.equals(listaConta.get(i).getPix())) //se o numero gerado já existir...
+                    temporaria = 1; 
+            }
+            if (temporaria==0) //se temporaria for 0, então o numero gerado nao existe no banco de dados, e o programa pode sair do while e prosseguir
+                break;
+        }
+        return pix; 
     }
 
     public static String gerarCodigoAleatorio(String str, byte tamanhoCodigo){  //a string str é composta por todas letras e/ou caracteres que o código gerado poderá ter 
@@ -199,7 +213,7 @@ public class AppBanco{
                 System.out.print("\nDigite sua chave PIX para confirmar a transferência ou tecle 1 para cancelar: ");
 
                 opcao = input.next();
-                if ( opcao.equals(conta.getCpf()) || opcao.equals(conta.getTelefone()) || opcao.equals(conta.getEmail()) )
+                if ( opcao.equals(conta.getCpf()) || opcao.equals(conta.getTelefone()) || opcao.equals(conta.getEmail()) || opcao.equals(conta.getPix()) )
                     conta.transferir(conta,listaConta.get(index),valor);
                 else if (opcao.equals("1"))
                     ;
