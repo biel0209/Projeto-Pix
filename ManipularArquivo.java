@@ -47,7 +47,8 @@ public class ManipularArquivo{ //Classe responsável por todas as operações en
         conta.setNumeroConta(pessoa.split(";")[6]);
         conta.setTipoConta(pessoa.split(";")[7]);
         conta.setSaldo(Float.valueOf(pessoa.split(";")[8]));   //conversao de String saldo para Float saldo, para facilitar seu uso interno no programa
-        conta.setExtrato(pessoa.split(";")[9]);
+        conta.setPix(pessoa.split(";")[9]);
+        conta.setExtrato(pessoa.split(";")[10]);
         return conta;
     }
 
@@ -59,7 +60,7 @@ public class ManipularArquivo{ //Classe responsável por todas as operações en
                                 conta.getEmail() + ";" + conta.getTelefone() + ";" +
                                 conta.getCodeBanco() + ";" + conta.getCodeAgencia() + ";" +
                                 conta.getNumeroConta() + ";" + conta.getTipoConta() + ";" +
-                                conta.getSaldo() + ";" + conta.getExtrato() + "/\n";
+                                conta.getSaldo() + ";" + conta.getPix() + ";" + conta.getExtrato() + "/\n";
                 arquivo.write(linha.getBytes());
             }
             arquivo.close();
