@@ -32,10 +32,12 @@ public class Cadastro extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         cadNome = new javax.swing.JTextField();
-        cadCPF = new javax.swing.JTextField();
         cadEmail = new javax.swing.JTextField();
         cadTel = new javax.swing.JTextField();
         butEnviar = new javax.swing.JButton();
+        bancoEscolhido = new javax.swing.JComboBox<>();
+        nomBanco = new javax.swing.JLabel();
+        cadCPF = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -46,21 +48,15 @@ public class Cadastro extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Levenim MT", 1, 18)); // NOI18N
         jLabel2.setText("CPF");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Levenim MT", 1, 18)); // NOI18N
         jLabel3.setText("Email");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Levenim MT", 1, 18)); // NOI18N
         jLabel4.setText("Telefone");
 
         cadNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cadNomeActionPerformed(evt);
-            }
-        });
-
-        cadCPF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cadCPFActionPerformed(evt);
             }
         });
 
@@ -78,9 +74,34 @@ public class Cadastro extends javax.swing.JFrame {
 
         butEnviar.setFont(new java.awt.Font("Levenim MT", 1, 20)); // NOI18N
         butEnviar.setText("Enviar");
+        butEnviar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         butEnviar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 butEnviarActionPerformed(evt);
+            }
+        });
+
+        bancoEscolhido.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        bancoEscolhido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Banco1", "Banco2", "Banco3" }));
+        bancoEscolhido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bancoEscolhidoActionPerformed(evt);
+            }
+        });
+
+        nomBanco.setFont(new java.awt.Font("Levenim MT", 1, 18)); // NOI18N
+        nomBanco.setText("Banco:");
+
+        try {
+            cadCPF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        cadCPF.setToolTipText("");
+        cadCPF.setFont(new java.awt.Font("Levenim MT", 1, 18)); // NOI18N
+        cadCPF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cadCPFActionPerformed(evt);
             }
         });
 
@@ -91,52 +112,60 @@ public class Cadastro extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(46, 46, 46)
+                                .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(jLabel4)))
+                        .addGap(40, 40, 40))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nomBanco)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel2))))
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cadTel, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                    .addComponent(cadNome, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                    .addComponent(cadEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabel4)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cadTel, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cadCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cadNome, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cadEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                        .addGap(8, 8, 8)
+                        .addComponent(bancoEscolhido, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cadCPF))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 233, Short.MAX_VALUE)
                 .addComponent(butEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(164, 164, 164))
+                .addGap(148, 148, 148))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(cadNome, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(91, 91, 91)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cadCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))))
-                .addGap(33, 33, 33)
+                .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(cadEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
+                    .addComponent(bancoEscolhido, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                    .addComponent(nomBanco, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cadNome, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cadCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cadEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
                     .addComponent(cadTel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(butEnviar)
-                .addGap(27, 27, 27))
+                .addGap(28, 28, 28))
         );
 
         pack();
@@ -144,16 +173,13 @@ public class Cadastro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void butEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butEnviarActionPerformed
-        // TODO add your handling code here:
+        //Salva os dados no arquivo
+        
     }//GEN-LAST:event_butEnviarActionPerformed
 
     private void cadNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadNomeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cadNomeActionPerformed
-
-    private void cadCPFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadCPFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cadCPFActionPerformed
 
     private void cadEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadEmailActionPerformed
         // TODO add your handling code here:
@@ -162,6 +188,14 @@ public class Cadastro extends javax.swing.JFrame {
     private void cadTelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadTelActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cadTelActionPerformed
+
+    private void bancoEscolhidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bancoEscolhidoActionPerformed
+        String nomeBanco = bancoEscolhido.getSelectedItem().toString();
+    }//GEN-LAST:event_bancoEscolhidoActionPerformed
+
+    private void cadCPFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadCPFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cadCPFActionPerformed
 
     /**
      * @param args the command line arguments
@@ -196,11 +230,13 @@ public class Cadastro extends javax.swing.JFrame {
                 new Cadastro().setVisible(true);
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> bancoEscolhido;
     private javax.swing.JButton butEnviar;
-    private javax.swing.JTextField cadCPF;
+    private javax.swing.JFormattedTextField cadCPF;
     private javax.swing.JTextField cadEmail;
     private javax.swing.JTextField cadNome;
     private javax.swing.JTextField cadTel;
@@ -208,5 +244,6 @@ public class Cadastro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel nomBanco;
     // End of variables declaration//GEN-END:variables
 }

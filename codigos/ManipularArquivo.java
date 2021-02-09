@@ -1,11 +1,13 @@
+package codigos;
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+import jdk.jfr.events.FileWriteEvent;
 import java.util.ArrayList;
 
 
@@ -47,7 +49,8 @@ public class ManipularArquivo{ //Classe responsável por todas as operações en
         conta.setNumeroConta(pessoa.split(";")[6]);
         conta.setTipoConta(pessoa.split(";")[7]);
         conta.setSaldo(Float.valueOf(pessoa.split(";")[8]));   //conversao de String saldo para Float saldo, para facilitar seu uso interno no programa
-        conta.setExtrato(pessoa.split(";")[9]);
+        conta.setPix(pessoa.split(";")[9]);
+        conta.setExtrato(pessoa.split(";")[10]);
         return conta;
     }
 
@@ -59,7 +62,7 @@ public class ManipularArquivo{ //Classe responsável por todas as operações en
                                 conta.getEmail() + ";" + conta.getTelefone() + ";" +
                                 conta.getCodeBanco() + ";" + conta.getCodeAgencia() + ";" +
                                 conta.getNumeroConta() + ";" + conta.getTipoConta() + ";" +
-                                conta.getSaldo() + ";" + conta.getExtrato() + "/\n";
+                                conta.getSaldo() + ";" + conta.getPix() + ";" + conta.getExtrato() + "/\n";
                 arquivo.write(linha.getBytes());
             }
             arquivo.close();
@@ -67,23 +70,4 @@ public class ManipularArquivo{ //Classe responsável por todas as operações en
             ex.printStackTrace();
         }
     }
-
-
-    public static void salvarPix(String pixCaminho, String pixSalvar){
-        
-        try (
-                FileWriter abre = new FileWriter(pixCaminho, true);
-                BufferedWriter buff = new BufferedWriter(abre);
-                PrintWriter escre = new PrintWriter(buff);
-
-                ){
-
-            escre.append(pixSalvar);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }

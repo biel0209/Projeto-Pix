@@ -1,14 +1,5 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.PrintStream;
-import java.io.RandomAccessFile;
-import java.util.ArrayList;
-import java.util.Random;
+package codigos;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +11,7 @@ public class BancoCentral {
     }
 
 
-    //Quebra de linha n funconando...
+    /*
     public void gerarPix(){
 
         String carac = "abcdefghijklmnopqrstuvwxyz1234567890";
@@ -37,7 +28,6 @@ public class BancoCentral {
                 BufferedReader buff = new BufferedReader(new FileReader("ListaPix.txt"));
                 
                 ){
-
             String linha="";
             while (linha!=null) {
                 if (linha == pix){
@@ -48,18 +38,12 @@ public class BancoCentral {
                     linha = buff.readLine();
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         ManipularArquivo.salvarPix("ListaPix.txt", (pix+"\n"));            
-            
-        
-        System.out.print(pix);
-
-        
     }
+    */
 
 
     
