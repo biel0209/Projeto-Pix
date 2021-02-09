@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 
 public class ManipularArquivo{ //Classe responsável por todas as operações envolvendo o arquivo, como extrair suas informações (ler) e gravar os dados(salvar)
-    public static final String CAMINHO = "/E:/UFS/3 PERIODO/POO/Projeto Pix/BaseClientes.txt"; //localizacao do arquivo de banco de dados
+    public static final String CAMINHO = "/Projeto Pix/codigos/BaseClientes.txt"; //localizacao do arquivo de banco de dados
 
     public static String ler(){  //método responsável por ler o arquivo e devolver todo seu conteúdo como uma única String
         String conteudo = ""; 
